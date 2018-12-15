@@ -4,13 +4,52 @@
       <router-link :to="{ name: 'home' }">Home</router-link> |
       <router-link v-bind:to="{ name: 'about' }">About</router-link>
     </div>
-    <router-view />
-    <router-view name="email"></router-view>
-    <router-view name="tel"></router-view>
+    <transition-group name="routerTransition">
+      <router-view key="default" />
+      <router-view key="email" name="email"></router-view>
+      <router-view key="tel" name="tel"></router-view>
+    </transition-group>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      routerTransition: ""
+    };
+  },
+  watch: {
+    // to代表当前路由对象
+    $route(to) {
+      to.query &&
+        to.query.transitionName &&
+        (this.routerTransition = to.query.transitionName);
+    }
+  }
+};
+</script>
+
 <style lang="scss">
+// 页面即将显示的状态
+.router-enter {
+  opacity: 0;
+}
+.router-enter-active {
+  transition: opacity 1s ease;
+}
+.router-enter-to {
+  opacity: 1;
+}
+.router-leave {
+  opacity: 1;
+}
+.router-leave-active {
+  transition: opacity 1s ease;
+}
+.router-leave-to {
+  opacity: 0;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
