@@ -3,8 +3,10 @@
 </template>
 
 <script>
+import AInput from '_c/AInput.vue'
 export default {
-  name: "store"
+  name: "store",
+  components:
 };
 </script>
 
