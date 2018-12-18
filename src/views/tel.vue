@@ -1,9 +1,27 @@
 <template>
-  <div>手机:13754397764</div>
+  <div class="p-tel">
+    <p>message:{{ message }}</p>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      message: ""
+    };
+  },
+  mounted() {
+    this.$bus.$on("on-click", msg => {
+      this.message = msg;
+    });
+  }
+};
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.p-tel {
+  color: red;
+  font-weight: 600;
+}
+</style>
