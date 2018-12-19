@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://localhost:4000",
+        target: "http://localhost:3000",
         // 将主机头的原点更改为目标URL
         changeOrigin: true,
         // 如果您想代理websockets
