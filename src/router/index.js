@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import routes from "./router";
-import { setTitle } from "@/lib/util";
+import store from "@/store";
+import { setTitle, setToken, getToken } from "@/lib/util";
 
 Vue.use(Router);
 
@@ -11,13 +12,42 @@ const router = new Router({
   routes
 });
 
-const HAS_LOGINED = true;
+// const HAS_LOGINED = false;
 
 // beforeEach可以注册一个全局前置守卫
 router.beforeEach((to, form, next) => {
   to.meta && setTitle(to.meta.title);
+  const token = getToken();
+  if (token) {
+    // 判断token是否有效
+    store
+      .dispatch("authorization", token)
+      .then(() => {
+        if (to.name === "login") {
+          next({
+            name: "home"
+          });
+        } else {
+          next();
+        }
+      })
+      .catch(() => {
+        setToken("");
+        next({
+          name: "login"
+        });
+      });
+  } else {
+    if (to.name === "login") {
+      next();
+    } else {
+      next({
+        name: "login"
+      });
+    }
+  }
   // 如果不是去登陆页
-  if (to.name !== "login") {
+  /* if (to.name !== "login") {
     // 已经登录
     if (HAS_LOGINED) {
       next();
@@ -36,7 +66,7 @@ router.beforeEach((to, form, next) => {
     } else {
       next();
     }
-  }
+  } */
 });
 
 // 全局守卫 参数与beforeEach一致

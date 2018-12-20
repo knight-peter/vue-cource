@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseURL } from "@/config";
-// import { getToken } from '@/lib/util'
+import { getToken } from "@/lib/util";
 
 class HttpRequest {
   constructor(baseUrl = baseURL) {
@@ -38,7 +38,7 @@ class HttpRequest {
         }
         // 把当前url放入queue队列中
         this.queue[url] = true;
-        // config.headers['token'] = getToken()
+        config.headers["Authorization"] = getToken();
         return config;
       },
       error => {
