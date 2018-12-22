@@ -54,7 +54,15 @@ class HttpRequest {
       },
       error => {
         this.distroy(url);
-        return Promise.reject(error);
+        if (error.code === 401) {
+          // 401 说明 token 验证失败
+          // 可以直接跳转到登录页面，重新登录获取 token
+          location.href = "/login";
+        } else if (error.code === 500) {
+          // 服务器错误
+          // do something
+          return Promise.reject(error);
+        }
       }
     );
   }

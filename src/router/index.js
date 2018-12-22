@@ -15,7 +15,7 @@ const router = new Router({
 // const HAS_LOGINED = false;
 
 // beforeEach可以注册一个全局前置守卫
-router.beforeEach((to, form, next) => {
+router.beforeEach((to, from, next) => {
   to.meta && setTitle(to.meta.title);
   const token = getToken();
   if (token) {
